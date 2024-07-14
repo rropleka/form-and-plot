@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+        <script>
+            function submitFunction() {
+                var request = new XMLHttpRequest();
+                var response = {x: [], y: []};
+                request.onreadystatechange = () => { 
+                if (request.readyState == XMLHttpRequest.DONE && request.status == 200)
+                    response = JSON.parse(request.responseText);
+                    let plotData = {
+                        x: response.x,
+                        y: response.y,
+                        mode: 'markers',
+                        type: 'scatter'
+                    }
+                    Plotly.newPlot("plot", [plotData]);
+
+                }
+                request.open("POST", "http://sjay.local:5000/api", true);
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.send(JSON.stringify(document.getElementById("myForm").elements));
+                return false;
+            }
+        </script>
+    </head>
+
+    <form id="myForm" onsubmit="return submitFunction();">
+        <label for="option1">option1</label>
+        <br>
+        <select id="option1">
+            <option value="a">a</option>
+            <option value="b">b</option>
+            <option value="c">c</option>
+        </select>
+        <br>
+        <label for="option2">option2</label>
+        <br>
+        <select id="option2">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+        <br>
+        <label for="option3">option3</label>
+        <br>
+        <select id="option3">
+            <option value="x">x</option>
+            <option value="y">y</option>
+            <option value="z">z</option>
+        </select>
+        <br>
+        <label for="option4">option4</label>
+        <br>
+        <select id="option4">
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
+        <br>
+        <button type="submit">submit</button>
+    </form>
+    <div id="plot">
+
+    </div>
+</html>
+
+<style>
+    select {
+        margin-top: 4px;
+        margin-bottom: 16px;
+    }
+</style>
+
